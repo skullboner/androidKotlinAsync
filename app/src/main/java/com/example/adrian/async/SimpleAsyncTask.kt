@@ -2,6 +2,7 @@ package com.example.adrian.async
 
 import android.os.AsyncTask
 import java.util.*
+import kotlin.system.measureTimeMillis
 
 
 const val PROGRESS_INTERVAL = 4
@@ -13,6 +14,7 @@ class SimpleAsyncTask(val updateText: (y: Int, x: String) -> Unit) : AsyncTask<V
         val r = Random()
         val n = r.nextInt(11)
         val s = n * 100
+
 
         fun sleep(time: Int) {
             if (time > 0) {
@@ -27,11 +29,13 @@ class SimpleAsyncTask(val updateText: (y: Int, x: String) -> Unit) : AsyncTask<V
 
 
         try {
-            sleep(s)
+            val time = measureTimeMillis {
+                sleep(s)
+            }
+            return "Awake afer sleepig for $s seconds. actually took $time"
         } catch (e: InterruptedException) {
-            e.printStackTrace()
+            return e.stackTrace.toString()
         }
-        return "Awake afer sleepig for $s seconds"
     }
 
     override fun onProgressUpdate(vararg values: Int?) {
