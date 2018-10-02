@@ -5,7 +5,7 @@ import java.util.*
 import kotlin.system.measureTimeMillis
 
 
-const val PROGRESS_INTERVAL = 4
+const val PROGRESS_INTERVAL = 10
 
 class SimpleAsyncTask(val updateText: (y: Int, x: String) -> Unit) : AsyncTask<Void, Int, String>() {
 
@@ -18,8 +18,8 @@ class SimpleAsyncTask(val updateText: (y: Int, x: String) -> Unit) : AsyncTask<V
 
         fun sleep(time: Int) {
             if (time > 0) {
-                if (time % PROGRESS_INTERVAL == 0) {
-                    val progressPercent = 100 - (time.toDouble() / s.toDouble() * 100).toInt()
+                val progressPercent = 100 - (time.toDouble() / s.toDouble() * 100).toInt()
+                if (progressPercent % PROGRESS_INTERVAL == 0) {
                     publishProgress(progressPercent, time)
                 }
                 Thread.sleep(1L)
